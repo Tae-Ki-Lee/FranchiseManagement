@@ -22,10 +22,6 @@ public class Employee {
         return workingHours * hourlyWage;
     }
 
-    public int getEmployeeId() {
-        return employeeId;
-    }
-
     public String getName() {
         return name;
     }
@@ -48,10 +44,6 @@ public class Employee {
 
     public void setAge(int age) {
         this.age = age;
-    }
-
-    public void setWorkingHours(double workingHours) {
-        this.workingHours = workingHours;
     }
 
     public void setHourlyWage(double hourlyWage) {

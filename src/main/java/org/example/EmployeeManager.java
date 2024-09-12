@@ -111,20 +111,4 @@ public class EmployeeManager {
             e.printStackTrace();
         }
     }
-
-    // 직원 정보 업데이트
-    public void updateEmployee(Employee employee) {
-        String sql = "UPDATE employees SET age = ?, hourly_wage = ?, location = ? WHERE name = ?";
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1, employee.getAge());
-            preparedStatement.setDouble(2, employee.getHourlyWage());
-            preparedStatement.setString(3, employee.getLocation());
-            preparedStatement.setString(4, employee.getName());
-            preparedStatement.executeUpdate();
-            System.out.println("직원 정보가 업데이트되었습니다.");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 }

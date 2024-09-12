@@ -68,17 +68,6 @@ public class StoreManager {
         return total;
     }
 
-    // 모든 점포 정보 출력
-    public void displayAllStores() {
-        if (stores.isEmpty()) {
-            System.out.println("등록된 점포가 없습니다.");
-        } else {
-            for (Store store : stores.values()) {
-                System.out.println(store);
-            }
-        }
-    }
-
     // 점포 목록 반환
     public Map<String, Store> getStores() {
         return stores;

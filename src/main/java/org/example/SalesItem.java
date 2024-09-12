@@ -17,15 +17,6 @@ public class SalesItem {
         this.price = price;
     }
 
-
-    public int getItemId() {
-        return itemId;
-    }
-
-    public void setItemId(int itemId) {
-        this.itemId = itemId;
-    }
-
     public String getName() {
         return name;
     }
@@ -36,10 +27,6 @@ public class SalesItem {
 
     public double getPrice() {
         return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
     }
 
     // 물품 정보 출력

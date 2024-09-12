@@ -47,10 +47,6 @@ public class Store {
     public InventoryStatus getInventoryItem(String itemName) {
         return inventoryManager.getInventoryItem(itemName); // InventoryManager에서 해당 아이템을 찾습니다.
     }
-    // 재고 로드 메서드
-    public void loadInventory() {
-        inventoryManager.loadInventoryFromDatabase(storeId);
-    }
 
     // 재고 추가 메서드
     public void addInventory(String itemName, int quantity, double price) {
@@ -106,10 +102,6 @@ public class Store {
         inventoryManager.deleteInventoryItem(itemName, storeId);
     }
 
-    // Store ID 반환
-    public int getStoreId() {
-        return storeId;
-    }
 
     @Override
     public String toString() {

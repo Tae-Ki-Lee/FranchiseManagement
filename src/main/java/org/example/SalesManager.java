@@ -90,22 +90,4 @@ public class SalesManager {
         }
     }
 
-    // 판매 물품 삭제
-    public void deleteSaleItem(int itemId) {
-        String sql = "DELETE FROM sales_items WHERE item_id = ?";
-
-        try (Connection connection = DBConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setInt(1, itemId);
-            int rowsAffected = preparedStatement.executeUpdate();
-
-            if (rowsAffected > 0) {
-                System.out.println("판매 물품이 삭제되었습니다.");
-            } else {
-                System.out.println("판매 물품을 찾을 수 없습니다.");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 }

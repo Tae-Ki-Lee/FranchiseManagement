@@ -29,20 +29,4 @@ public class InventoryStatus {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-
-    public void useStock(int amount) {
-        if (quantity >= amount) {
-            quantity -= amount;
-        } else {
-            System.out.println("재고 부족!");
-        }
-    }
-
-    public void addStock(int amount) {
-        quantity += amount;
-    }
-
-    public boolean needsRestocking() {
-        return quantity < 10;
-    }
 }
