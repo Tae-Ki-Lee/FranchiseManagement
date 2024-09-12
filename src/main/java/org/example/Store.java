@@ -44,7 +44,9 @@ public class Store {
     public String getStoreName() {
         return storeName;
     }
-
+    public InventoryStatus getInventoryItem(String itemName) {
+        return inventoryManager.getInventoryItem(itemName); // InventoryManager에서 해당 아이템을 찾습니다.
+    }
     // 재고 로드 메서드
     public void loadInventory() {
         inventoryManager.loadInventoryFromDatabase(storeId);
@@ -60,7 +62,10 @@ public class Store {
     public String getInventoryStatus() {
         return inventoryManager.getInventoryStatus();
     }
-
+    // InventoryManager에 업데이트된 항목을 추가
+    public void updateInventory(InventoryStatus updatedItem) {
+        inventoryManager.addInventoryItem(updatedItem, this.storeId);
+    }
     // 데이터베이스에 점포 저장 (새로 추가하거나 업데이트)
     public void saveToDatabase() {
         try (Connection connection = DBConnection.getConnection()) {

@@ -8,7 +8,7 @@ public class Employee {
     private double hourlyWage;
     private String location;
 
-    public Employee(int employeeId, String name, int age, double workingHours, double hourlyWage) {
+    public Employee(int employeeId, String name, int age, double workingHours, double hourlyWage, String location) {
         this.employeeId = employeeId;
         this.name = name;
         this.age = age;
@@ -22,7 +22,6 @@ public class Employee {
         return workingHours * hourlyWage;
     }
 
-    // Getters and Setters
     public int getEmployeeId() {
         return employeeId;
     }
@@ -42,9 +41,27 @@ public class Employee {
     public double getHourlyWage() {
         return hourlyWage;
     }
-    public String getLocation(){
+
+    public String getLocation() {
         return location;
     }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public void setWorkingHours(double workingHours) {
+        this.workingHours = workingHours;
+    }
+
+    public void setHourlyWage(double hourlyWage) {
+        this.hourlyWage = hourlyWage;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     // 직원 정보 출력
     public void displayEmployeeInfo() {
         System.out.println("직원 ID: " + employeeId);
@@ -53,6 +70,6 @@ public class Employee {
         System.out.println("근무 시간: " + workingHours + "시간");
         System.out.println("시급: " + hourlyWage + "원");
         System.out.println("총 임금: " + calculateTotalWage() + "원");
-        System.out.println("근무 점포 : "+location);
+        System.out.println("근무 점포: " + location);
     }
 }

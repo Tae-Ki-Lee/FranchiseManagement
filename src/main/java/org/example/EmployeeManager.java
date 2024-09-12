@@ -1,41 +1,130 @@
 package org.example;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EmployeeManager {
-    private Map<Integer, Employee> employees = new HashMap<>();
 
     // 직원 추가
     public void addEmployee(Employee employee) {
-        employees.put(employee.getEmployeeId(), employee);
-        System.out.println("직원이 추가되었습니다: " + employee.getName());
+        String sql = "INSERT INTO employees (name, age, hourly_wage, location) VALUES (?, ?, ?, ?)";
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, employee.getName());
+            preparedStatement.setInt(2, employee.getAge());
+            preparedStatement.setDouble(3, employee.getHourlyWage());
+            preparedStatement.setString(4, employee.getLocation());
+            preparedStatement.executeUpdate();
+            System.out.println("직원이 추가되었습니다.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    // 특정 직원의 총 급여 계산
-    public double calculateTotalWage(int employeeId) {
-        Employee employee = employees.get(employeeId);
+    // 이름으로 직원 조회
+    public Employee getEmployeeByName(String name) {
+        String sql = "SELECT * FROM employees WHERE name = ?";
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, name);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                int employeeId = resultSet.getInt("employee_id");
+                int age = resultSet.getInt("age");
+                double workingHours = resultSet.getDouble("working_hours");
+                double hourlyWage = resultSet.getDouble("hourly_wage");
+                String location = resultSet.getString("location");
+
+                return new Employee(employeeId, name, age, workingHours, hourlyWage, location);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    // 직원 근무 시간 업데이트 (근무 시간이 누적됨)
+    public void updateWorkingHours(String name, double hours) {
+        Employee employee = getEmployeeByName(name);
         if (employee != null) {
-            return employee.calculateTotalWage();
+            double updatedHours = employee.getWorkingHours() + hours;
+            String sql = "UPDATE employees SET working_hours = ? WHERE name = ?";
+
+            try (Connection connection = DBConnection.getConnection();
+                 PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+                preparedStatement.setDouble(1, updatedHours);
+                preparedStatement.setString(2, name);
+                preparedStatement.executeUpdate();
+                System.out.println(name + "의 근무 시간이 업데이트되었습니다.");
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         } else {
-            System.out.println("해당 직원이 없습니다.");
-            return 0;
+            System.out.println("직원을 찾을 수 없습니다.");
         }
     }
 
-    // 모든 직원의 총 급여 계산
-    public double calculateTotalWages() {
-        double totalWages = 0;
-        for (Employee employee : employees.values()) {
-            totalWages += employee.calculateTotalWage();
+    // 모든 직원 목록 조회
+    public List<Employee> getAllEmployees() {
+        List<Employee> employees = new ArrayList<>();
+        String sql = "SELECT * FROM employees";
+
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                int employeeId = resultSet.getInt("employee_id");
+                String name = resultSet.getString("name");
+                int age = resultSet.getInt("age");
+                double workingHours = resultSet.getDouble("working_hours");
+                double hourlyWage = resultSet.getDouble("hourly_wage");
+                String location = resultSet.getString("location");
+
+                employees.add(new Employee(employeeId, name, age, workingHours, hourlyWage, location));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return totalWages;
+        return employees;
     }
 
-    // 모든 직원 정보 출력
-    public void displayAllEmployees() {
-        for (Employee employee : employees.values()) {
-            employee.displayEmployeeInfo();
+    // 직원 삭제
+    public void deleteEmployeeByName(String name) {
+        String sql = "DELETE FROM employees WHERE name = ?";
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, name);
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("직원이 삭제되었습니다.");
+            } else {
+                System.out.println("직원을 찾을 수 없습니다.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // 직원 정보 업데이트
+    public void updateEmployee(Employee employee) {
+        String sql = "UPDATE employees SET age = ?, hourly_wage = ?, location = ? WHERE name = ?";
+        try (Connection connection = DBConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setInt(1, employee.getAge());
+            preparedStatement.setDouble(2, employee.getHourlyWage());
+            preparedStatement.setString(3, employee.getLocation());
+            preparedStatement.setString(4, employee.getName());
+            preparedStatement.executeUpdate();
+            System.out.println("직원 정보가 업데이트되었습니다.");
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

@@ -10,7 +10,7 @@ public class InventoryStatus {
         this.quantity = quantity;
         this.price = price;
     }
-
+    //Getter
     public String getName() {
         return name;
     }
@@ -21,6 +21,13 @@ public class InventoryStatus {
 
     public double getPrice() {
         return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public void useStock(int amount) {

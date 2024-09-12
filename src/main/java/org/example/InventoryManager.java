@@ -87,4 +87,8 @@ public class InventoryManager {
         }
         return sb.toString();
     }
+
+    public InventoryStatus getInventoryItem(String itemName) {
+        return inventory.get(itemName);
+    }
 }
